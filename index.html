@@ -1,181 +1,256 @@
-HTML
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إعداد وصل واستلام النظارات</title>
+    <title>نظام إدارة ومطبوعات النظارات والبصريات</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&display=swap');
 
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #f59e0b;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --border-color: #cbd5e1;
+        }
+
         * {
             box-sizing: border-box;
-            font-family: 'Cairo', Arial, sans-serif;
+            font-family: 'Cairo', sans-serif;
             font-weight: 900 !important;
-            color: #000000 !important;
         }
 
         body {
-            background-color: #f3f4f6;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
             margin: 0;
-            padding: 15px;
+            padding: 20px 10px;
             direction: rtl;
         }
 
-        .container {
-            max-width: 800px;
+        .main-wrapper {
+            max-width: 900px;
             margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border: 2px solid #000;
         }
 
-        .no-print-header {
+        /* رأس الصفحة والأزرار */
+        .app-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff !important;
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid #000;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-        h2 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 900;
-        }
+        .app-header * { color: #ffffff !important; }
+        .app-header h1 { margin: 0; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             font-size: 14px;
-            font-weight: 900;
-            border: 2px solid #000;
-            border-radius: 6px;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            margin-left: 5px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-settings { background-color: #faca15; }
-        .btn-print { background-color: #22c55e; color: #000; }
-        .btn-reset { background-color: #ef4444; color: #fff !important; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15); }
+        .btn-settings { background-color: var(--accent); color: #000000 !important; }
+        .btn-reset { background-color: #ef4444; color: #ffffff !important; }
+        .btn-print { background-color: #10b981; color: #ffffff !important; }
 
-        .settings-panel {
-            background-color: #fef08a;
-            border: 2px dashed #000;
-            padding: 15px;
-            border-radius: 8px;
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 22px;
             margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 17px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .card-title * { color: var(--primary) !important; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 13px; color: #475569; }
+
+        input {
+            padding: 12px 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            color: #0f172a !important;
+            transition: border-color 0.2s;
+        }
+
+        input:focus { outline: none; border-color: var(--primary); background-color: #ffffff; }
+
+        .settings-drawer {
+            background: #fffbeb;
+            border: 2px dashed #f59e0b;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
             display: none;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #000;
-            border-radius: 5px;
-            font-size: 15px;
-            font-weight: 900;
-            background: #fff;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        th, td {
-            border: 2px solid #000;
-            padding: 8px;
-            text-align: center;
-            font-weight: 900;
-            font-size: 15px;
-        }
-
-        th {
-            background-color: #e5e7eb;
-        }
-
-        /* تنسيق الوصل الحراري (شاشة ومعاينة) */
-        .receipt-preview {
-            border: 3px solid #000;
+        .simple-correction-box {
+            background-color: #f1f5f9;
             padding: 15px;
-            background: #fff;
-            width: 100%;
-            max-width: 320px;
-            margin: 20px auto;
+            border-radius: 12px;
+            border-right: 4px solid var(--primary);
         }
 
-        .receipt-header {
+        .eye-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .eye-label {
+            width: 70px;
+            background: var(--primary);
+            color: white !important;
+            padding: 6px 10px;
+            border-radius: 8px;
             text-align: center;
-            border-bottom: 2px dashed #000;
-            padding-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .eye-inputs { display: flex; flex: 1; gap: 8px; }
+        .eye-inputs input { flex: 1; padding: 8px 10px; text-align: center; font-size: 14px; }
+
+        /* 🧾 تصميم الوصل المطبوع (متناسق ومركزي) */
+        .receipt-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 330px;
+            margin: 20px auto;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px solid #000000;
+            color: #000000 !important;
+            text-align: right;
+        }
+
+        .receipt-container * {
+            color: #000000 !important;
+            background-color: transparent !important;
+        }
+
+        .rc-header {
+            text-align: center;
+            border-bottom: 2px dashed #000000;
+            padding-bottom: 8px;
             margin-bottom: 10px;
         }
 
-        .receipt-header h3 {
-            margin: 0 0 5px 0;
-            font-size: 20px;
-            font-weight: 900;
-        }
+        .rc-header h2 { margin: 0 0 4px 0; font-size: 18px; }
+        .rc-header p { margin: 2px 0; font-size: 12px; }
 
-        .receipt-header p {
-            margin: 2px 0;
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .receipt-title {
+        /* عناوين في الوسط تماماً */
+        .rc-center-block {
             text-align: center;
-            font-weight: 900;
-            font-size: 16px;
-            margin: 10px 0;
-            text-decoration: underline;
+            margin: 8px 0;
         }
 
-        .info-line {
+        .rc-title {
+            display: inline-block;
+            font-size: 14px;
+            padding: 4px 12px;
+            border: 1px solid #000000;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+
+        .rc-date-sub {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .rc-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 14px;
-            font-weight: 900;
+            font-size: 13px;
+            margin-bottom: 4px;
+            padding: 0 10px; /* إدخال الأطراف قليلاً نحو الوسط */
         }
 
-        .totals-box {
-            border-top: 2px dashed #000;
-            margin-top: 10px;
-            padding-top: 8px;
-        }
-
-        .footer-note {
-            text-align: center;
+        .rc-section-title {
             font-size: 12px;
-            margin-top: 15px;
-            border-top: 1px solid #000;
-            padding-top: 8px;
-            font-weight: 900;
+            border-bottom: 1px solid #000000;
+            margin: 8px 0 4px 0;
+            padding-bottom: 2px;
+            text-align: center;
         }
 
-        /* 🖨️ تخصيص الكود للطباعة الحرارية 80mm */
+        .rc-simple-eye {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            border: 1px solid #000000;
+            text-align: center; /* القياسات في الوسط */
+        }
+
+        /* تنسيق المبالغ والأثمنة لتكون متوازنة وفي الوسط وليست ملتصقة باليسار */
+        .rc-totals {
+            border-top: 2px dashed #000000;
+            margin-top: 10px;
+            padding-top: 6px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .rc-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .rc-footer {
+            text-align: center;
+            font-size: 11px;
+            margin-top: 10px;
+            border-top: 1px solid #000000;
+            padding-top: 6px;
+        }
+
+        /* 🖨️ إعدادات الطباعة */
+        @page {
+            size: auto;
+            margin: 0mm;
+        }
+
         @media print {
             body {
-                background: #fff !important;
+                background: #ffffff !important;
                 padding: 0 !important;
                 margin: 0 !important;
             }
@@ -184,20 +259,19 @@ HTML
                 display: none !important;
             }
 
-            .container {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                width: 100% !important;
+            .main-wrapper {
                 max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
-            .receipt-preview {
+            .receipt-container {
+                box-shadow: none !important;
                 border: none !important;
-                width: 78mm !important;
-                max-width: 78mm !important;
-                margin: 0 auto !important;
-                padding: 2mm !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 4mm !important;
             }
 
             * {
@@ -206,218 +280,188 @@ HTML
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-
-            table, th, td {
-                border: 2px solid #000 !important;
-            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- شريط التحكم الإداري -->
-    <div class="no-print-header no-print">
-        <h2>نظام إدارة وصلات محلات النظارات</h2>
-        <div>
+<div class="main-wrapper">
+
+    <!-- شريط الإدارة العلوي -->
+    <header class="app-header no-print">
+        <h1>🕶️ نظام إعداد وصلات النظارات</h1>
+        <div class="header-actions">
             <button class="btn btn-settings" onclick="toggleSettings()">⚙️ إعدادات المحل</button>
             <button class="btn btn-reset" onclick="resetCustomerForm()">🔄 زبون جديد</button>
             <button class="btn btn-print" onclick="window.print()">🖨️ طباعة الوصل</button>
         </div>
-    </div>
+    </header>
 
-    <!-- لوحة إعدادات المحل -->
-    <div id="settingsPanel" class="settings-panel no-print">
-        <h3 style="margin-top:0;">بيانات المحل (تُحفظ تلقائياً):</h3>
-        <div class="form-grid">
-            <div>
-                <label>اسم المحل (Nom):</label>
+    <!-- لوحة إعدادات المحل المخفية -->
+    <div id="settingsDrawer" class="settings-drawer no-print">
+        <h3 style="margin-top:0; color:#b45309;">إعدادات المحل (تُحفظ تلقائياً):</h3>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>اسم المحل (Nom du magasin):</label>
                 <input type="text" id="shopNameInput" value="OPTIQUE EL MANSOUR" oninput="updateShopInfo()">
             </div>
-            <div>
+            <div class="field-group">
                 <label>الوصف (Activité):</label>
                 <input type="text" id="shopDescInput" value="نظارات بصرية وقياس النظر" oninput="updateShopInfo()">
             </div>
-            <div>
-                <label>رقم الهاتف (Tél):</label>
+            <div class="field-group">
+                <label>رقم الهاتف (Téléphone):</label>
                 <input type="text" id="shopPhoneInput" value="0522XXXXXX / 0661XXXXXX" oninput="updateShopInfo()">
             </div>
-            <div>
+            <div class="field-group">
                 <label>العنوان (Adresse):</label>
                 <input type="text" id="shopAddressInput" value="القنيطرة - المغرب" oninput="updateShopInfo()">
             </div>
         </div>
-        <button class="btn btn-settings" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+        <button class="btn btn-settings" style="margin-top:15px;" onclick="saveSettings()">💾 حفظ الإعدادات</button>
     </div>
 
-    <!-- استمارة معطيات الزبون -->
-    <div class="no-print">
-        <h3 style="border-bottom: 2px solid #000; padding-bottom: 5px;">1️⃣ معلومات الزبون والطلب:</h3>
-        <div class="form-grid">
-            <div>
-                <label>اسم وننسب الزبون:</label>
+    <!-- استمارة إدخال معلومات الزبون والطلب -->
+    <div class="card no-print">
+        <h3 class="card-title">👤 معلومات الزبون والطلب</h3>
+        <div class="grid-3">
+            <div class="field-group">
+                <label>اسم ونسب الزبون:</label>
                 <input type="text" id="clientName" placeholder="أحمد العلوي" oninput="updateReceipt()">
             </div>
-            <div>
+            <div class="field-group">
                 <label>رقم هاتف الزبون:</label>
                 <input type="text" id="clientPhone" placeholder="06XXXXXXXX" oninput="updateReceipt()">
             </div>
-            <div>
+            <div class="field-group">
                 <label>تاريخ الاستلام (Livraison):</label>
                 <input type="date" id="deliveryDate" onchange="updateReceipt()">
             </div>
-            <div>
+            <div class="field-group">
                 <label>رقم الوصل (N° Bon):</label>
                 <input type="text" id="bonNumber" value="1001" oninput="updateReceipt()">
             </div>
         </div>
+    </div>
 
-        <h3 style="border-bottom: 2px solid #000; padding-bottom: 5px;">2️⃣ القياسات البصرية (Correction):</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>العين (Oeil)</th>
-                    <th>SPH</th>
-                    <th>CYL</th>
-                    <th>AXE</th>
-                    <th>ADD</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>OD (اليمين)</b></td>
-                    <td><input type="text" id="odSph" placeholder="-1.50" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="odCyl" placeholder="-0.50" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="odAxe" placeholder="180°" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="odAdd" placeholder="+2.00" oninput="updateReceipt()"></td>
-                </tr>
-                <tr>
-                    <td><b>OG (اليسار)</b></td>
-                    <td><input type="text" id="ogSph" placeholder="-2.00" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="ogCyl" placeholder="-0.75" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="ogAxe" placeholder="165°" oninput="updateReceipt()"></td>
-                    <td><input type="text" id="ogAdd" placeholder="+2.00" oninput="updateReceipt()"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="form-grid">
-            <div>
-                <label>المسافة بين البؤرتين (EP mm):</label>
-                <input type="text" id="epValue" placeholder="62 mm" oninput="updateReceipt()">
+    <!-- بطاقة القياسات البصرية المبسطة -->
+    <div class="card no-print">
+        <h3 class="card-title">👁️ القياسات البصرية المبسطة (Correction)</h3>
+        <div class="simple-correction-box">
+            <div class="eye-row">
+                <div class="eye-label">العين R (OD)</div>
+                <div class="eye-inputs">
+                    <input type="text" id="odCorrection" placeholder="مثال: -1.50 (-0.50) 180°" oninput="updateReceipt()">
+                </div>
             </div>
-            <div>
-                <label>نوع الإطار (Monture):</label>
-                <input type="text" id="montureInput" placeholder="Ray-Ban كحلي" oninput="updateReceipt()">
+            <div class="eye-row">
+                <div class="eye-label">العين L (OG)</div>
+                <div class="eye-inputs">
+                    <input type="text" id="ogCorrection" placeholder="مثال: -2.00 (-0.75) 165°" oninput="updateReceipt()">
+                </div>
             </div>
-            <div>
-                <label>نوع العدسات (Verres):</label>
-                <input type="text" id="verresInput" placeholder="Anti-reflet BlueCut" oninput="updateReceipt()">
-            </div>
-        </div>
-
-        <h3 style="border-bottom: 2px solid #000; padding-bottom: 5px;">3️⃣ الحساب المالي (DH):</h3>
-        <div class="form-grid">
-            <div>
-                <label>المبلغ الإجمالي (Total):</label>
-                <input type="number" id="totalAmount" placeholder="800" oninput="calculateBalance()">
-            </div>
-            <div>
-                <label>المسبق (Avance):</label>
-                <input type="number" id="advanceAmount" placeholder="300" oninput="calculateBalance()">
-            </div>
-            <div>
-                <label>الباقي للدفع (Reste):</label>
-                <input type="number" id="restAmount" readonly style="background:#e5e7eb;">
+            <div class="grid-3" style="margin-top: 10px;">
+                <div class="field-group">
+                    <label>المسافة بين البؤرتين (EP mm):</label>
+                    <input type="text" id="epValue" placeholder="62 mm" oninput="updateReceipt()">
+                </div>
+                <div class="field-group">
+                    <label>نوع الإطار (Monture):</label>
+                    <input type="text" id="montureInput" placeholder="Ray-Ban كحلي" oninput="updateReceipt()">
+                </div>
+                <div class="field-group">
+                    <label>نوع العدسات (Verres):</label>
+                    <input type="text" id="verresInput" placeholder="Anti-reflet BlueCut" oninput="updateReceipt()">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 🧾 منطقة الوصل المخصص للطباعة الحرارية -->
-    <h3 class="no-print" style="margin-top: 30px; text-align: center;">معاينة شكل الوصل المطبوع (80mm):</h3>
-    
-    <div class="receipt-preview" id="receiptArea">
-        <div class="receipt-header">
-            <h3 id="rcShopName">OPTIQUE EL MANSOUR</h3>
+    <!-- بطاقة الحساب المالي -->
+    <div class="card no-print">
+        <h3 class="card-title">💰 التفاصيل المالية (DH)</h3>
+        <div class="grid-3">
+            <div class="field-group">
+                <label>المبلغ الإجمالي (Total):</label>
+                <input type="number" id="totalAmount" placeholder="800" oninput="calculateBalance()">
+            </div>
+            <div class="field-group">
+                <label>المسبق / العربون (Avance):</label>
+                <input type="number" id="advanceAmount" placeholder="300" oninput="calculateBalance()">
+            </div>
+            <div class="field-group">
+                <label>الباقي للدفع (Reste):</label>
+                <input type="number" id="restAmount" readonly style="background:#e2e8f0;">
+            </div>
+        </div>
+    </div>
+
+    <!-- 🧾 معاينة شكل الوصل المطبوع -->
+    <div class="no-print" style="text-align: center; margin-top: 25px;">
+        <h3 style="color: #475569;">معاينة شكل الوصل قبل الطباعة:</h3>
+    </div>
+
+    <div class="receipt-container">
+        <div class="rc-header">
+            <h2 id="rcShopName">OPTIQUE EL MANSOUR</h2>
             <p id="rcShopDesc">نظارات بصرية وقياس النظر</p>
             <p id="rcShopPhone">الهاتف: 0522XXXXXX / 0661XXXXXX</p>
             <p id="rcShopAddress">العنوان: القنيطرة - المغرب</p>
         </div>
 
-        <div class="receipt-title">وصل استلام / REÇU DE LIVRAISON</div>
-
-        <div class="info-line">
-            <span>رقم الوصل: <b id="rcBonNum">#1001</b></span>
-            <span>التاريخ: <b id="rcDate">--/--/----</b></span>
+        <!-- العنوان والتاريخ في الوسط تماماً -->
+        <div class="rc-center-block">
+            <div class="rc-title"><b>وصل استلام / REÇU DE LIVRAISON</b></div>
+            <div class="rc-date-sub">تاريخ الطلب: <span id="rcDate">--/--/----</span></div>
         </div>
-        <div class="info-line">
+
+        <div class="rc-row" style="margin-top: 8px;">
+            <span>رقم الوصل: <b id="rcBonNum">#1001</b></span>
+        </div>
+        <div class="rc-row">
             <span>الزبون: <b id="rcClientName">----------</b></span>
         </div>
-        <div class="info-line">
+        <div class="rc-row">
             <span>الهاتف: <b id="rcClientPhone">----------</b></span>
         </div>
-        <div class="info-line">
+        <div class="rc-row">
             <span>تاريخ الاستلام: <b id="rcDeliveryDate">--/--/----</b></span>
         </div>
 
-        <div style="margin-top: 8px; font-weight:900; font-size:13px;">👁️ القياسات (Correction):</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Eye</th>
-                    <th>SPH</th>
-                    <th>CYL</th>
-                    <th>AXE</th>
-                    <th>ADD</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><b>OD</b></td>
-                    <td id="rcOdSph">-</td>
-                    <td id="rcOdCyl">-</td>
-                    <td id="rcOdAxe">-</td>
-                    <td id="rcOdAdd">-</td>
-                </tr>
-                <tr>
-                    <td><b>OG</b></td>
-                    <td id="rcOgSph">-</td>
-                    <td id="rcOgCyl">-</td>
-                    <td id="rcOgAxe">-</td>
-                    <td id="rcOgAdd">-</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="info-line">
+        <div class="rc-section-title"><b>👁️ القياسات البصرية (Correction)</b></div>
+        <div class="rc-simple-eye"><b>OD (اليمنى):</b> <span id="rcOdVal">-</span></div>
+        <div class="rc-simple-eye"><b>OG (اليسرى):</b> <span id="rcOgVal">-</span></div>
+        <div class="rc-row" style="margin-top: 4px; justify-content: center;">
             <span>المسافة بين البؤرتين (EP): <b id="rcEp">-- mm</b></span>
         </div>
 
-        <div style="border-top: 1px dashed #000; margin-top: 6px; padding-top: 6px;">
-            <div class="info-line"><span>الإطار: <b id="rcMonture">-</b></span></div>
-            <div class="info-line"><span>العدسات: <b id="rcVerres">-</b></span></div>
-        </div>
+        <div class="rc-section-title"><b>👓 تفاصيل النظارة</b></div>
+        <div class="rc-row"><span>الإطار: <b id="rcMonture">-</b></span></div>
+        <div class="rc-row"><span>العدسات: <b id="rcVerres">-</b></span></div>
 
-        <div class="totals-box">
-            <div class="info-line"><span>المبلغ الإجمالي (Total):</span><span id="rcTotal">0 DH</span></div>
-            <div class="info-line"><span>المبلغ المسبق (Avance):</span><span id="rcAdvance">0 DH</span></div>
-            <div class="info-line" style="font-size: 16px;">
-                <span><b>الباقي (Reste):</b></span>
+        <!-- الأثمنة والمبالغ منسقة ومرجوعة نحو الوسط وليست في أقصى اليسار -->
+        <div class="rc-totals">
+            <div class="rc-total-row"><span>المبلغ الإجمالي (Total):</span><span id="rcTotal">0 DH</span></div>
+            <div class="rc-total-row"><span>المسبق (Avance):</span><span id="rcAdvance">0 DH</span></div>
+            <div class="rc-total-row" style="font-size: 15px; margin-top: 6px; border-top: 1px dashed #000; padding-top: 4px;">
+                <span><b>الباقي للدفع (Reste):</b></span>
                 <span><b id="rcRest">0 DH</b></span>
             </div>
         </div>
 
-        <div class="footer-note">
+        <div class="rc-footer">
             ⚠️ المرجو إحضار هذا الوصل ضرورياً عند الاستلام.<br>
             شكراً لزيارتكم - Merci de votre confiance
         </div>
     </div>
+
 </div>
 
 <script>
-    // الحفظ في LocalStorage لإعدادات المحل
     window.onload = function() {
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('rcDate').innerText = today;
+        const today = new Date();
+        const formattedToday = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
+        document.getElementById('rcDate').innerText = formattedToday;
         
         if(localStorage.getItem('optiShopName')) {
             document.getElementById('shopNameInput').value = localStorage.getItem('optiShopName');
@@ -429,8 +473,8 @@ HTML
     };
 
     function toggleSettings() {
-        const panel = document.getElementById('settingsPanel');
-        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        const drawer = document.getElementById('settingsDrawer');
+        drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
     }
 
     function saveSettings() {
@@ -461,17 +505,17 @@ HTML
         document.getElementById('rcBonNum').innerText = '#' + (document.getElementById('bonNumber').value || '---');
         document.getElementById('rcClientName').innerText = document.getElementById('clientName').value || '----------';
         document.getElementById('rcClientPhone').innerText = document.getElementById('clientPhone').value || '----------';
-        document.getElementById('rcDeliveryDate').innerText = document.getElementById('deliveryDate').value || '--/--/----';
 
-        document.getElementById('rcOdSph').innerText = document.getElementById('odSph').value || '-';
-        document.getElementById('rcOdCyl').innerText = document.getElementById('odCyl').value || '-';
-        document.getElementById('rcOdAxe').innerText = document.getElementById('odAxe').value || '-';
-        document.getElementById('rcOdAdd').innerText = document.getElementById('odAdd').value || '-';
+        const dateVal = document.getElementById('deliveryDate').value;
+        if(dateVal) {
+            const parts = dateVal.split('-');
+            document.getElementById('rcDeliveryDate').innerText = parts[2] + '/' + parts[1] + '/' + parts[0];
+        } else {
+            document.getElementById('rcDeliveryDate').innerText = '--/--/----';
+        }
 
-        document.getElementById('rcOgSph').innerText = document.getElementById('ogSph').value || '-';
-        document.getElementById('rcOgCyl').innerText = document.getElementById('ogCyl').value || '-';
-        document.getElementById('rcOgAxe').innerText = document.getElementById('ogAxe').value || '-';
-        document.getElementById('rcOgAdd').innerText = document.getElementById('ogAdd').value || '-';
+        document.getElementById('rcOdVal').innerText = document.getElementById('odCorrection').value || '-';
+        document.getElementById('rcOgVal').innerText = document.getElementById('ogCorrection').value || '-';
 
         document.getElementById('rcEp').innerText = (document.getElementById('epValue').value || '--') + ' mm';
         document.getElementById('rcMonture').innerText = document.getElementById('montureInput').value || '-';
@@ -490,14 +534,8 @@ HTML
         document.getElementById('clientName').value = '';
         document.getElementById('clientPhone').value = '';
         document.getElementById('deliveryDate').value = '';
-        document.getElementById('odSph').value = '';
-        document.getElementById('odCyl').value = '';
-        document.getElementById('odAxe').value = '';
-        document.getElementById('odAdd').value = '';
-        document.getElementById('ogSph').value = '';
-        document.getElementById('ogCyl').value = '';
-        document.getElementById('ogAxe').value = '';
-        document.getElementById('ogAdd').value = '';
+        document.getElementById('odCorrection').value = '';
+        document.getElementById('ogCorrection').value = '';
         document.getElementById('epValue').value = '';
         document.getElementById('montureInput').value = '';
         document.getElementById('verresInput').value = '';
@@ -505,7 +543,6 @@ HTML
         document.getElementById('advanceAmount').value = '';
         document.getElementById('restAmount').value = '';
         
-        // زيادة رقم الوصل تلقائياً للزبون التالي
         let currentBon = parseInt(document.getElementById('bonNumber').value) || 1000;
         document.getElementById('bonNumber').value = currentBon + 1;
 
