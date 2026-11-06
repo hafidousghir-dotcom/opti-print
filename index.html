@@ -2,719 +2,545 @@
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système Optique - Facture / Devis / Reçu</title>
+    <title>OptiGest Pro - Système de Gestion Optique</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=Montserrat:wght@600;700;800&display=swap');
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --accent: #f59e0b;
-            --bg-main: #f8fafc;
-            --card-bg: #ffffff;
-            --text-dark: #0f172a;
-        }
-
-        * {
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
-        }
-
         body {
-            background-color: var(--bg-main);
-            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
-            padding: 15px;
-        }
-
-        .main-wrapper {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* 🚀 شريط تحكم علوي حديث بدون لون أسود وموسط العناصر */
-        .app-header {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
-            color: #ffffff;
-            padding: 18px 25px;
-            border-radius: 18px;
-            box-shadow: 0 12px 25px -5px rgba(37, 99, 235, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 22px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .app-header h1 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff !important;
-            letter-spacing: 0.3px;
-        }
-
-        .header-actions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .btn {
-            padding: 9px 18px;
-            font-size: 14px;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-settings { 
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
-            color: #ffffff !important; 
-        }
-        
-        .btn-reset { 
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
-            color: #ffffff !important; 
-        }
-        
-        .btn-print { 
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
-            color: #ffffff !important; 
-        }
-
-        /* Mode Selector */
-        .mode-selector {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 14px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            direction: rtl;
-        }
-
-        .mode-btn {
-            padding: 9px 18px;
-            font-size: 14px;
-            font-weight: 700;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .mode-btn.active {
-            background: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
-        }
-
-        /* Cards */
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            border: 1px solid #e2e8f0;
-            direction: rtl;
+            color: #333;
+            font-size: 15px;
         }
-
-        .card-title {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 8px;
-        }
-
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-
-        .field-group { display: flex; flex-direction: column; gap: 5px; }
-        label { font-size: 13px; font-weight: 600; color: #475569; }
-
-        input, select {
-            padding: 10px 12px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            background-color: #f8fafc;
-        }
-
-        /* 📄 DOCUMENT A4 (FACTURE / DEVIS) */
-        .a4-document {
+        .controls {
+            text-align: center;
+            margin-bottom: 25px;
             background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .controls button {
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            margin: 5px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .btn-print { background-color: #27ae60; }
+        .btn-client { background-color: #e74c3c; }
+        .btn-param { background-color: #d35400; }
+        .btn-doc { background-color: #2980b9; }
+        .btn-add-row { background-color: #8e44ad; padding: 5px 12px; font-size: 13px; }
+        
+        .controls button:hover { opacity: 0.9; }
+
+        /* نافذة الإعدادات المنبثقة */
+        #settings-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .modal-content h3 { margin-top: 0; color: #2980b9; }
+        .modal-content label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        .modal-content input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        .modal-content button { margin-top: 15px; background: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+
+        /* لوحة إدخال البيانات للوصل الحراري */
+        .data-input-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .data-input-panel label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 3px; color: #555; }
+        .data-input-panel input { width: 100%; padding: 7px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        
+        .section-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            background: #fafafa;
+        }
+        .section-box h4 { margin: 0 0 10px 0; color: #2980b9; font-size: 14px; }
+
+        /* Layout des documents A4 */
+        .page {
+            background: white;
             width: 210mm;
             min-height: 297mm;
-            margin: 20px auto;
+            margin: 0 auto 20px auto;
             padding: 20mm;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 4px;
-            color: #000000;
             box-sizing: border-box;
-            display: block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
-
-        .doc-header {
+        
+        .header-flex {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 3px solid #1e3a8a;
+            border-bottom: 2px solid #2980b9;
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
-
-        .company-info h2 { margin: 0; font-size: 24px; font-weight: 800; color: #1e3a8a; }
-        .company-info p { margin: 3px 0; font-size: 12px; font-weight: 600; color: #334155; }
-
-        .doc-type-box { text-align: right; }
-        .doc-type-box h1 { margin: 0; font-size: 28px; font-weight: 800; color: #1e3a8a; text-transform: uppercase; }
-
-        .doc-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+        .shop-info h1 {
+            margin: 0;
+            color: #2980b9;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
-
-        .client-box h3 { margin: 0 0 5px 0; font-size: 14px; color: #1e3a8a; font-weight: 800; }
-        .client-box p { margin: 2px 0; font-size: 13px; font-weight: 600; }
-
-        /* A4 Tables */
-        .a4-table {
+        .shop-info p, .doc-info p {
+            margin: 3px 0;
+            font-size: 15px;
+            color: #555;
+        }
+        .doc-info { text-align: right; }
+        .doc-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2980b9;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-top: 8px;
         }
-
-        .a4-table th, .a4-table td {
-            border: 1px solid #cbd5e1;
-            padding: 10px;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: left;
-        }
-
-        .a4-table th {
-            background-color: #1e3a8a;
-            color: #ffffff;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .correction-table th { background-color: #0284c7; }
-
-        .totals-container { display: flex; justify-content: flex-end; margin-top: 20px; }
-        .totals-table { width: 280px; border-collapse: collapse; }
-        .totals-table td { padding: 8px 12px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; }
-        .totals-table .grand-total { background-color: #1e3a8a; color: #ffffff; font-size: 15px; font-weight: 700; }
-
-        .doc-footer {
-            margin-top: 50px;
+        table, th, td { border: 1px solid #ddd; }
+        th, td {
+            padding: 8px 10px;
             text-align: center;
-            border-top: 2px solid #e2e8f0;
-            padding-top: 15px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748b;
+            font-size: 15px;
         }
+        th { background-color: #2980b9; color: white; }
+        
+        .items-table th { background-color: #333; }
+        .editable-cell { background: #fff8dc; outline: none; }
+        .editable-cell:focus { background: #fff; border: 2px solid #2980b9; }
 
-        /* 🧾 REÇU THERMIQUE (80mm) */
-        .receipt-container {
-            background: #ffffff;
-            width: 100%;
-            max-width: 330px;
-            margin: 20px auto;
-            padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border: 2px solid #000000;
-            color: #000000 !important;
-            display: none;
-            direction: rtl;
+        .totals {
+            margin-top: 20px;
+            float: right;
+            width: 300px;
         }
+        .totals table, .totals th, .totals td { border: none; }
+        .totals td { text-align: right; padding: 5px; font-size: 15px; }
+        .totals tr.total-row { font-weight: bold; font-size: 17px; border-top: 2px solid #333; }
+        
+        .signatures {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .sig-box { width: 180px; text-align: center; font-size: 15px; }
+        .sig-line { margin-top: 40px; border-bottom: 1px dashed #777; }
 
-        .rc-header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 8px; margin-bottom: 10px; }
-        .rc-header h2 { margin: 0; font-size: 18px; font-weight: 900; }
-        .rc-header p { margin: 2px 0; font-size: 12px; font-weight: 800; }
+        /* تنسيق الوصل الحراري (80MM) */
+        #recu {
+            width: 80mm;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 4mm !important;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #recu .main-title { font-size: 26px !important; font-weight: 800 !important; color: #000 !important; text-align: center; }
+        #recu .sub-text, #recu table, #recu th, #recu td {
+            font-size: 21px !important;
+            font-weight: 700 !important;
+            color: #000 !important;
+            text-align: center !important;
+        }
+        #recu table, #recu th, #recu td { padding: 3px !important; border: 2px solid #000 !important; }
 
-        .rc-center-block { text-align: center; margin: 8px 0; }
-        .rc-title { display: inline-block; font-size: 14px; padding: 4px 12px; border: 1px solid #000; border-radius: 6px; font-weight: 900; }
-        .rc-date-sub { font-size: 12px; margin-top: 2px; font-weight: 800; }
-
-        .rc-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; margin-bottom: 4px; padding: 0 5px; }
-        .rc-section-title { font-size: 12px; font-weight: 900; border-bottom: 1px solid #000; margin: 8px 0 4px 0; text-align: center; }
-        .rc-simple-eye { font-size: 12px; font-weight: 900; padding: 4px; border: 1px solid #000; text-align: center; margin-bottom: 4px; }
-
-        .rc-totals { border-top: 2px dashed #000; margin-top: 10px; padding-top: 6px; padding-left: 10px; padding-right: 10px; }
-
-        /* 🖨️ PRINTER SETTINGS */
+        /* إعدادات الطباعة */
         @media print {
-            body { background: #ffffff !important; padding: 0 !important; margin: 0 !important; }
-            .no-print { display: none !important; }
-            
-            body.print-a4 .a4-document {
+            @page { size: auto; margin: 0 !important; }
+            body { background: none; padding: 0 !important; margin: 0 !important; }
+            .controls, .data-input-panel, #settings-modal, .btn-add-row, .no-print { display: none !important; }
+            .page {
                 box-shadow: none !important;
                 margin: 0 !important;
                 width: 100% !important;
+                min-height: auto !important;
                 padding: 10mm !important;
             }
-            body.print-a4 .receipt-container { display: none !important; }
-
-            body.print-recu .a4-document { display: none !important; }
-            body.print-recu .receipt-container {
-                display: block !important;
-                box-shadow: none !important;
-                border: none !important;
-                width: 100% !important;
-                max-width: 100% !important;
+            #recu {
+                width: 80mm !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 1mm 2mm !important;
                 margin: 0 !important;
-                padding: 4mm !important;
+                position: absolute;
+                top: 0; left: 0;
             }
-
-            * { color: #000000 !important; font-weight: 900 !important; -webkit-print-color-adjust: exact !important; }
+            .hidden-doc { display: none !important; }
+            .editable-cell { background: transparent !important; }
         }
+        
+        .hidden-doc { display: none; }
     </style>
 </head>
-<body class="print-a4">
+<body>
 
-<div class="main-wrapper">
-
-    <!-- Header Control المحدث والمعصرن -->
-    <header class="app-header no-print">
-        <h1>Système de Gestion Optique - Facturation & Reçus</h1>
-        <div class="header-actions">
-            <button class="btn btn-print" onclick="triggerPrint()">🖨️ Imprimer</button>
-            <button class="btn btn-reset" onclick="resetForm()">🔄 Nouveau Client</button>
-            <button class="btn btn-settings" onclick="toggleSettings()">⚙️ Paramètres</button>
-        </div>
-    </header>
-
-    <!-- Mode Selector -->
-    <div class="mode-selector no-print">
-        <button class="mode-btn active" id="btnModeFacture" onclick="setDocMode('facture')">📄 Facture (A4)</button>
-        <button class="mode-btn" id="btnModeDevis" onclick="setDocMode('devis')">📋 Devis Proforma (A4)</button>
-        <button class="mode-btn" id="btnModeRecu" onclick="setDocMode('recu')">🧾 Reçu Client (80mm)</button>
-    </div>
-
-    <!-- Paramètres Magasin -->
-    <div id="settingsDrawer" class="card no-print" style="display:none; background:#fffbeb; border:2px dashed #f59e0b;">
-        <h3 class="card-title" style="color:#b45309;">إعدادات المحل (تُحفظ تلقائياً):</h3>
-        <div class="grid-2">
-            <div class="field-group"><label>Nom du Magasin:</label><input type="text" id="shopName" value="OPTIQUE EL MANSOUR" oninput="updateAll()"></div>
-            <div class="field-group"><label>Activité / Description:</label><input type="text" id="shopDesc" value="Optique Médicale & Examens de la Vue" oninput="updateAll()"></div>
-            <div class="field-group"><label>Téléphone:</label><input type="text" id="shopPhone" value="0522XXXXXX / 0661XXXXXX" oninput="updateAll()"></div>
-            <div class="field-group"><label>Adresse:</label><input type="text" id="shopAddress" value="Kenitra - Maroc" oninput="updateAll()"></div>
-            <div class="field-group"><label>ICE / RC / IF:</label><input type="text" id="shopTaxId" value="ICE: 001234567890001 - RC: 12345" oninput="updateAll()"></div>
-        </div>
-        <button class="btn btn-settings" style="margin-top:15px;" onclick="saveSettings()">💾 Save Settings</button>
-    </div>
-
-    <!-- Form Inputs -->
-    <div class="card no-print">
-        <h3 class="card-title">👤 Informations Client & Commande</h3>
-        <div class="grid-3">
-            <div class="field-group"><label>Nom & Prénom du Client:</label><input type="text" id="clientName" placeholder="M. Ahmed ALAOUI" oninput="updateAll()"></div>
-            <div class="field-group"><label>Téléphone Client:</label><input type="text" id="clientPhone" placeholder="06XXXXXXXX" oninput="updateAll()"></div>
-            <div class="field-group"><label>Date d'échéance / Livraison:</label><input type="date" id="deliveryDate" onchange="updateAll()"></div>
-            <div class="field-group"><label>N° Document / Bon:</label><input type="text" id="docNumber" value="2026-1001" oninput="updateAll()"></div>
+    <!-- نافذة الإعدادات -->
+    <div id="settings-modal">
+        <div class="modal-content">
+            <h3>⚙️ Paramètres du Magasin</h3>
+            <label>Nom du Magasin:</label>
+            <input type="text" id="setting-shop-name" value="OPTIQUE CENTRE">
+            <label>Sous-titre / Spécialité:</label>
+            <input type="text" id="setting-shop-sub" value="Optique & Lunetterie">
+            <label>Téléphone / ICE:</label>
+            <input type="text" id="setting-shop-phone" value="Tél: 0537XXXXXX">
+            <button onclick="saveSettings()">Enregistrer</button>
         </div>
     </div>
 
-    <div class="card no-print">
-        <h3 class="card-title">👁️ Correction Optique (Mesures)</h3>
-        <div class="grid-2">
-            <div class="field-group"><label>Oeil Droit (OD):</label><input type="text" id="odVal" placeholder="ex: -1.50 (-0.50) 180°" oninput="updateAll()"></div>
-            <div class="field-group"><label>Oeil Gauche (OG):</label><input type="text" id="ogVal" placeholder="ex: -2.00 (-0.75) 165°" oninput="updateAll()"></div>
-            <div class="field-group"><label>Ecart Pupillaire (EP mm):</label><input type="text" id="epVal" placeholder="62 mm" oninput="updateAll()"></div>
+    <!-- لوحة إدخال البيانات الخاصة بالوصل الحراري فقط -->
+    <div class="data-input-panel">
+        <h3 style="margin-top: 0; color: #2980b9;">🎫 Données du Reçu Thermique (80mm)</h3>
+        <div class="panel-grid">
+            <div>
+                <label>Nom du Client (Reçu):</label>
+                <input type="text" id="input-client-name" value="M. Karim El Amrani" oninput="updateRecuData()">
+            </div>
+            <div>
+                <label>Désignation / Article:</label>
+                <input type="text" id="input-item-desc" value="Pack Lunettes" oninput="updateRecuData()">
+            </div>
+            <div>
+                <label>Montant Total (DH):</label>
+                <input type="number" id="input-total" value="1900" oninput="updateRecuData()">
+            </div>
+            <div>
+                <label>Acompte Versé (DH):</label>
+                <input type="number" id="input-acompte" value="1000" oninput="updateRecuData()">
+            </div>
         </div>
-    </div>
 
-    <div class="card no-print">
-        <h3 class="card-title">👓 Monture, Verres & Montants (DH)</h3>
-        <div class="grid-3">
-            <div class="field-group"><label>Désignation Monture & Prix:</label><input type="text" id="montureDesc" placeholder="Monture Ray-Ban" oninput="updateAll()"></div>
-            <div class="field-group"><label>Prix Monture (DH):</label><input type="number" id="monturePrice" placeholder="500" oninput="updateAll()"></div>
-            <div class="field-group"><label>Désignation Verres & Prix:</label><input type="text" id="verresDesc" placeholder="Verres Anti-reflet BlueCut" oninput="updateAll()"></div>
-            <div class="field-group"><label>Prix Verres (DH):</label><input type="number" id="verresPrice" placeholder="300" oninput="updateAll()"></div>
-            <div class="field-group"><label>Avance / المسبق (DH):</label><input type="number" id="advancePrice" placeholder="200" oninput="updateAll()"></div>
-            <div class="field-group"><label>Appliquer TVA (20%):</label>
-                <select id="tvaSelect" onchange="updateAll()">
-                    <option value="no">Non (Exonéré / Sans TVA)</option>
-                    <option value="yes">Oui (TVA 20% Incluse)</option>
-                </select>
+        <div class="section-box">
+            <h4>👓 Mesures Réfraction pour Reçu (OD / OG)</h4>
+            <div class="panel-grid" style="margin-bottom: 0;">
+                <div><label>OD SPH:</label><input type="text" id="od-sph" value="-1.75" oninput="updateRecuData()"></div>
+                <div><label>OD CYL:</label><input type="text" id="od-cyl" value="-0.50" oninput="updateRecuData()"></div>
+                <div><label>OG SPH:</label><input type="text" id="og-sph" value="-2.00" oninput="updateRecuData()"></div>
+                <div><label>OG CYL:</label><input type="text" id="og-cyl" value="-0.75" oninput="updateRecuData()"></div>
             </div>
         </div>
     </div>
 
-    <!-- 📄 PREVIEW A4 (FACTURE & DEVIS) -->
-    <div class="a4-document" id="a4Container">
-        <div class="doc-header">
-            <div class="company-info">
-                <h2 id="a4ShopName">OPTIQUE EL MANSOUR</h2>
-                <p id="a4ShopDesc">Optique Médicale & Examens de la Vue</p>
-                <p id="a4ShopAddress">Tél: 0522XXXXXX | Adresse: Kenitra - Maroc</p>
-                <p id="a4ShopTax">ICE: 001234567890001 - RC: 12345</p>
+    <!-- أزرار التحكم العلوية -->
+    <div class="controls">
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimer</button>
+        <button class="btn-client" onclick="resetAll()">➕ Nouveau Client</button>
+        <button class="btn-param" onclick="openSettings()">⚙️ Paramètres</button>
+        <br style="margin: 8px 0;">
+        <button class="btn-doc" onclick="showDoc('facture')">🧾 Facture Générale (A4)</button>
+        <button class="btn-doc" onclick="showDoc('devis')">📄 Devis Général (A4)</button>
+        <button class="btn-doc" onclick="showDoc('recu')">🎫 Reçu Client (80mm)</button>
+    </div>
+
+    <!---------------- 1. FACTURE GÉNÉRALE (A4) ---------------->
+    <div id="facture" class="page">
+        <div class="header-flex">
+            <div class="shop-info">
+                <h1 class="dynamic-shop-name">OPTIQUE CENTRE</h1>
+                <p class="dynamic-shop-sub">Optique & Lunetterie</p>
+                <p class="dynamic-shop-phone">Tél: 0537XXXXXX</p>
+                <p>Maroc</p>
             </div>
-            <div class="doc-type-box">
-                <h1 id="a4DocTitle">FACTURE</h1>
-                <p style="font-size:13px; font-weight:700; margin:5px 0;">N°: <span id="a4DocNum">2026-1001</span></p>
-                <p style="font-size:12px; font-weight:600; margin:0;">Date: <span id="a4DocDate">23/10/2026</span></p>
+            <div class="doc-info">
+                <p><strong>Date:</strong> <span class="current-date">05/11/2026</span></p>
+                <p><strong>Facture N°:</strong> FAC-2026-0142</p>
+                <p><strong>Nom Client:</strong> <span contenteditable="true" class="editable-cell" style="padding: 2px 8px; font-weight: bold;">[ Cliquer pour écrire ]</span></p>
             </div>
         </div>
 
-        <div class="doc-details">
-            <div class="client-box">
-                <h3>CLIENT / DESTINATAIRE:</h3>
-                <p><b>Nom:</b> <span id="a4ClientName">M. Ahmed ALAOUI</span></p>
-                <p><b>Téléphone:</b> <span id="a4ClientPhone">06XXXXXXXX</span></p>
-            </div>
-            <div class="client-box" style="text-align: right;">
-                <h3>LIVRAISON / ECHÉANCE:</h3>
-                <p><b>Date prévue:</b> <span id="a4DeliveryDate">--/--/----</span></p>
-            </div>
-        </div>
+        <div class="doc-title">Facture Définitive</div>
 
-        <!-- Correction Table A4 -->
-        <div style="margin-bottom: 15px;">
-            <h4 style="margin: 0 0 8px 0; color: #1e3a8a; font-size: 13px; font-weight: 700;">CORRECTION OPTIQUE (PRESCRIPTION)</h4>
-            <table class="a4-table correction-table">
-                <thead>
-                    <tr>
-                        <th>OEIL</th>
-                        <th>CORRECTION / MESURES</th>
-                        <th>ECART PUPILLAIRE (EP)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><b>OEIL DROIT (OD)</b></td>
-                        <td id="a4Od">-</td>
-                        <td rowspan="2" style="vertical-align: middle; text-align: center;" id="a4Ep">62 mm</td>
-                    </tr>
-                    <tr>
-                        <td><b>OEIL GAUCHE (OG)</b></td>
-                        <td id="a4Og">-</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Items Table A4 -->
-        <table class="a4-table">
+        <button class="btn-doc btn-add-row no-print" onclick="addRow('facture-table-body', 'fac')">➕ Ajouter une ligne</button>
+        
+        <table class="items-table" style="margin-top: 10px;">
             <thead>
                 <tr>
-                    <th style="width: 50%;">DÉSIGNATION / ARTICLE</th>
-                    <th style="text-align: center;">QTÉ</th>
-                    <th style="text-align: right;">PRIX UNI (DH)</th>
-                    <th style="text-align: right;">TOTAL (DH)</th>
+                    <th style="width: 50%;">Désignation / Description</th>
+                    <th>Quantité</th>
+                    <th>Prix Unit. (DH)</th>
+                    <th>Montant Total (DH)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="facture-table-body">
                 <tr>
-                    <td><b id="a4MontureName">Monture Ray-Ban</b></td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: right;" id="a4MontureUnitPrice">0.00</td>
-                    <td style="text-align: right;" id="a4MontureTotalPrice">0.00</td>
+                    <td contenteditable="true" class="editable-cell" style="text-align: left;">Monture Optique de Marque</td>
+                    <td contenteditable="true" class="editable-cell fac-qty" oninput="calcA4('facture-table-body', 'fac-total-ht')">1</td>
+                    <td contenteditable="true" class="editable-cell fac-price" oninput="calcA4('facture-table-body', 'fac-total-ht')">1200.00</td>
+                    <td class="fac-row-total">1200.00</td>
                 </tr>
                 <tr>
-                    <td><b id="a4VerresName">Verres Anti-reflet BlueCut</b></td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: right;" id="a4VerresUnitPrice">0.00</td>
-                    <td style="text-align: right;" id="a4VerresTotalPrice">0.00</td>
+                    <td contenteditable="true" class="editable-cell" style="text-align: left;">Verres Anti-Reflet Spéciaux</td>
+                    <td contenteditable="true" class="editable-cell fac-qty" oninput="calcA4('facture-table-body', 'fac-total-ht')">2</td>
+                    <td contenteditable="true" class="editable-cell fac-price" oninput="calcA4('facture-table-body', 'fac-total-ht')">350.00</td>
+                    <td class="fac-row-total">700.00</td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Totals A4 -->
-        <div class="totals-container">
-            <table class="totals-table">
-                <tr id="rowHt" style="display:none;">
+        <div class="totals">
+            <table>
+                <tr>
                     <td>Total HT:</td>
-                    <td style="text-align: right;" id="a4TotalHt">0.00 DH</td>
-                </tr>
-                <tr id="rowTva" style="display:none;">
-                    <td>TVA (20%):</td>
-                    <td style="text-align: right;" id="a4TotalTva">0.00 DH</td>
-                </tr>
-                <tr class="grand-total">
-                    <td><b>TOTAL TTC:</b></td>
-                    <td style="text-align: right;"><b id="a4TotalTtc">0.00 DH</b></td>
+                    <td><span id="fac-total-ht">1900.00</span> DH</td>
                 </tr>
                 <tr>
-                    <td>Avance (Payé):</td>
-                    <td style="text-align: right;" id="a4Advance">0.00 DH</td>
+                    <td>TVA (0%):</td>
+                    <td>0.00 DH</td>
                 </tr>
-                <tr style="background:#f1f5f9;">
-                    <td><b>Reste à Payer:</b></td>
-                    <td style="text-align: right;"><b id="a4Rest">0.00 DH</b></td>
+                <tr class="total-row">
+                    <td>Net à Payer:</td>
+                    <td><span id="fac-net-payer">1900.00</span> DH</td>
                 </tr>
             </table>
         </div>
+        <div style="clear: both;"></div>
 
-        <div class="doc-footer">
-            <p>Merci pour votre confiance - Mode de paiement: Espèces / Chèque / Carte</p>
-            <p id="a4FooterTax">OPTIQUE EL MANSOUR - ICE: 001234567890001</p>
+        <div style="margin-top: 40px; font-size: 14px; border-top: 1px solid #ccc; padding-top: 8px; color: #666;">
+            <p><strong>Condition:</strong> Les marchandises vendues ne sont ni reprises ni échangées après façonnage.</p>
+        </div>
+
+        <div class="signatures">
+            <div class="sig-box">
+                <p>Signature du Client</p>
+                <div class="sig-line"></div>
+            </div>
+            <div class="sig-box">
+                <p>Cachet & Signature</p>
+                <div class="sig-line"></div>
+            </div>
         </div>
     </div>
 
-    <!-- 🧾 PREVIEW REÇU THERMIQUE (80mm) -->
-    <div class="receipt-container" id="recuContainer">
-        <div class="rc-header">
-            <h2 id="rcShopName">OPTIQUE EL MANSOUR</h2>
-            <p id="rcShopDesc">نظارات بصرية وقياس النظر</p>
-            <p id="rcShopPhone">الهاتف: 0522XXXXXX / 0661XXXXXX</p>
-            <p id="rcShopAddress">العنوان: القنيطرة - المغرب</p>
-        </div>
 
-        <div class="rc-center-block">
-            <div class="rc-title">وصل استلام / REÇU DE LIVRAISON</div>
-            <div class="rc-date-sub">تاريخ الطلب: <span id="rcDate">23/10/2026</span></div>
-        </div>
-
-        <div class="rc-row"><span>رقم الوصل: <b id="rcBonNum">#1001</b></span></div>
-        <div class="rc-row"><span>الزبون: <b id="rcClientName">----------</b></span></div>
-        <div class="rc-row"><span>الهاتف: <b id="rcClientPhone">----------</b></span></div>
-        <div class="rc-row"><span>تاريخ الاستلام: <b id="rcDeliveryDate">--/--/----</b></span></div>
-
-        <div class="rc-section-title"><b>👁️ القياسات البصرية (Correction)</b></div>
-        <div class="rc-simple-eye"><b>OD (اليمنى):</b> <span id="rcOdVal">-</span></div>
-        <div class="rc-simple-eye"><b>OG (اليسرى):</b> <span id="rcOgVal">-</span></div>
-        <div class="rc-row" style="margin-top:4px; justify-content:center;"><span>EP: <b id="rcEp">-- mm</b></span></div>
-
-        <div class="rc-section-title"><b>👓 تفاصيل النظارة</b></div>
-        <div class="rc-row"><span>الإطار: <b id="rcMonture">-</b></span></div>
-        <div class="rc-row"><span>العدسات: <b id="rcVerres">-</b></span></div>
-
-        <div class="rc-totals">
-            <div class="rc-row"><span>المبلغ الإجمالي (Total):</span><span id="rcTotal">0 DH</span></div>
-            <div class="rc-row"><span>المسبق (Avance):</span><span id="rcAdvance">0 DH</span></div>
-            <div class="rc-row" style="font-size:15px; margin-top:6px; border-top:1px dashed #000; padding-top:4px;">
-                <span><b>الباقي للدفع (Reste):</b></span>
-                <span><b id="rcRest">0 DH</b></span>
+    <!---------------- 2. DEVIS GÉNÉRAL (A4) ---------------->
+    <div id="devis" class="page hidden-doc">
+        <div class="header-flex">
+            <div class="shop-info">
+                <h1 class="dynamic-shop-name">OPTIQUE CENTRE</h1>
+                <p class="dynamic-shop-sub">Optique & Lunetterie</p>
+                <p class="dynamic-shop-phone">Tél: 0537XXXXXX</p>
+                <p>Maroc</p>
+            </div>
+            <div class="doc-info">
+                <p><strong>Date:</strong> <span class="current-date">05/11/2026</span></p>
+                <p><strong>Devis N°:</strong> DEV-2026-0142</p>
+                <p><strong>Nom Client:</strong> <span contenteditable="true" class="editable-cell" style="padding: 2px 8px; font-weight: bold;">[ Cliquer pour écrire ]</span></p>
             </div>
         </div>
 
-        <div style="text-align:center; font-size:11px; margin-top:10px; border-top:1px solid #000; padding-top:6px; font-weight:900;">
-            ⚠️ المرجو إحضار هذا الوصل عند الاستلام.<br>
-            Merci de votre confiance
+        <div class="doc-title">Devis Estimatif</div>
+
+        <button class="btn-doc btn-add-row no-print" onclick="addRow('devis-table-body', 'dev')">➕ Ajouter une ligne</button>
+
+        <table class="items-table" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Désignation des Articles & Services</th>
+                    <th>Quantité</th>
+                    <th>Prix Unit. (DH)</th>
+                    <th>Montant Total (DH)</th>
+                </tr>
+            </thead>
+            <tbody id="devis-table-body">
+                <tr>
+                    <td contenteditable="true" class="editable-cell" style="text-align: left;">Equipement Optique Solaire / Vue</td>
+                    <td contenteditable="true" class="editable-cell dev-qty" oninput="calcA4('devis-table-body', 'dev-total-ht')">1</td>
+                    <td contenteditable="true" class="editable-cell dev-price" oninput="calcA4('devis-table-body', 'dev-total-ht')">1500.00</td>
+                    <td class="dev-row-total">1500.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="totals">
+            <table>
+                <tr>
+                    <td>Total Estimé:</td>
+                    <td><span id="dev-total-ht">1500.00</span> DH</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Net à Payer:</td>
+                    <td><span id="dev-net-payer">1500.00</span> DH</td>
+                </tr>
+            </table>
+        </div>
+        <div style="clear: both;"></div>
+
+        <div class="signatures">
+            <div class="sig-box">
+                <p>Acceptation Client</p>
+                <div class="sig-line"></div>
+            </div>
+            <div class="sig-box">
+                <p>Cachet & Signature</p>
+                <div class="sig-line"></div>
+            </div>
         </div>
     </div>
 
-</div>
 
-<script>
-    let currentMode = 'facture';
+    <!---------------- 3. REÇU THERMIQUE (80MM) ---------------->
+    <div id="recu" class="page hidden-doc">
+        <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 3px; margin-bottom: 3px;">
+            <div class="main-title dynamic-shop-name">OPTIQUE CENTRE</div>
+            <div class="main-title" style="margin: 2px 0; font-size: 22px !important;">Reçu de Paiement</div>
+            <div class="sub-text dynamic-shop-phone" style="font-weight: bold;">Tél: 0537XXXXXX</div>
+        </div>
 
-    window.onload = function() {
-        const today = new Date();
-        const formattedToday = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
-        document.getElementById('a4DocDate').innerText = formattedToday;
-        document.getElementById('rcDate').innerText = formattedToday;
+        <div class="sub-text" style="margin-bottom: 3px; text-align: center;">
+            <div style="font-weight: bold;">Date: <span class="current-date">05/11/2026</span></div>
+            <div>Ticket: #REC-0142</div>
+            <div>Client: <span id="recu-client-view">M. Karim El Amrani</span></div>
+        </div>
 
-        if(localStorage.getItem('optiShopName')) {
-            document.getElementById('shopName').value = localStorage.getItem('optiShopName');
-            document.getElementById('shopDesc').value = localStorage.getItem('optiShopDesc');
-            document.getElementById('shopPhone').value = localStorage.getItem('optiShopPhone');
-            document.getElementById('shopAddress').value = localStorage.getItem('optiShopAddress');
-            document.getElementById('shopTaxId').value = localStorage.getItem('optiShopTaxId');
-        }
-        updateAll();
-    };
+        <div class="sub-text" style="border-top: 2px dashed #000; border-bottom: 2px dashed #000; margin: 3px 0; padding: 2px 0; text-align: center;">
+            <div>OD: SPH:<span id="v-od-sph">-1.75</span> | CYL:<span id="v-od-cyl">-0.50</span></div>
+            <div>OG: SPH:<span id="v-og-sph">-2.00</span> | CYL:<span id="v-og-cyl">-0.75</span></div>
+        </div>
 
-    function setDocMode(mode) {
-        currentMode = mode;
-        document.getElementById('btnModeFacture').classList.remove('active');
-        document.getElementById('btnModeDevis').classList.remove('active');
-        document.getElementById('btnModeRecu').classList.remove('active');
+        <table style="margin: 3px 0; width: 100%;">
+            <tr>
+                <td style="text-align: center; font-weight: bold;">Article</td>
+                <td style="text-align: center; font-weight: bold;">Total</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;"><span id="recu-item-view">Pack Lunettes</span></td>
+                <td style="text-align: center;"><span class="val-total">1900</span> DH</td>
+            </tr>
+        </table>
 
-        document.body.classList.remove('print-a4', 'print-recu');
+        <div class="sub-text" style="margin-top: 3px; border-top: 2px solid #000; padding-top: 3px;">
+            <div style="display: flex; justify-content: space-between; padding: 0 5px;"><span>Total:</span> <span><span class="val-total">1900.00</span> DH</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 0 5px;"><span>Acompte:</span> <span><span class="val-acompte">1000.00</span> DH</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 0 5px;"><span>Reste:</span> <span><span class="val-reste">900.00</span> DH</span></div>
+        </div>
 
-        if(mode === 'facture') {
-            document.getElementById('btnModeFacture').classList.add('active');
-            document.getElementById('a4DocTitle').innerText = 'FACTURE';
-            document.getElementById('a4Container').style.display = 'block';
-            document.getElementById('recuContainer').style.display = 'none';
-            document.body.classList.add('print-a4');
-        } else if(mode === 'devis') {
-            document.getElementById('btnModeDevis').classList.add('active');
-            document.getElementById('a4DocTitle').innerText = 'DEVIS PROFORMA';
-            document.getElementById('a4Container').style.display = 'block';
-            document.getElementById('recuContainer').style.display = 'none';
-            document.body.classList.add('print-a4');
-        } else if(mode === 'recu') {
-            document.getElementById('btnModeRecu').classList.add('active');
-            document.getElementById('a4Container').style.display = 'none';
-            document.getElementById('recuContainer').style.display = 'block';
-            document.body.classList.add('print-recu');
-        }
-    }
+        <div class="sub-text" style="text-align: center; margin-top: 5px; border-top: 2px dashed #000; padding-top: 3px;">
+            <div>Merci de votre visite !</div>
+        </div>
+    </div>
 
-    function toggleSettings() {
-        const el = document.getElementById('settingsDrawer');
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function saveSettings() {
-        localStorage.setItem('optiShopName', document.getElementById('shopName').value);
-        localStorage.setItem('optiShopDesc', document.getElementById('shopDesc').value);
-        localStorage.setItem('optiShopPhone', document.getElementById('shopPhone').value);
-        localStorage.setItem('optiShopAddress', document.getElementById('shopAddress').value);
-        localStorage.setItem('optiShopTaxId', document.getElementById('shopTaxId').value);
-        alert('Paramètres enregistrés!');
-        toggleSettings();
-    }
-
-    function updateAll() {
-        const name = document.getElementById('shopName').value || 'OPTIQUE EL MANSOUR';
-        const desc = document.getElementById('shopDesc').value || '';
-        const phone = document.getElementById('shopPhone').value || '';
-        const addr = document.getElementById('shopAddress').value || '';
-        const tax = document.getElementById('shopTaxId').value || '';
-
-        document.getElementById('a4ShopName').innerText = name;
-        document.getElementById('a4ShopDesc').innerText = desc;
-        document.getElementById('a4ShopAddress').innerText = 'Tél: ' + phone + ' | Adresse: ' + addr;
-        document.getElementById('a4ShopTax').innerText = tax;
-        document.getElementById('a4FooterTax').innerText = name + ' - ' + tax;
-
-        document.getElementById('rcShopName').innerText = name;
-        document.getElementById('rcShopDesc').innerText = desc;
-        document.getElementById('rcShopPhone').innerText = 'Tél: ' + phone;
-        document.getElementById('rcShopAddress').innerText = 'Adresse: ' + addr;
-
-        const client = document.getElementById('clientName').value || '----------';
-        const cPhone = document.getElementById('clientPhone').value || '----------';
-        const docNum = document.getElementById('docNumber').value || '1001';
-
-        document.getElementById('a4ClientName').innerText = client;
-        document.getElementById('a4ClientPhone').innerText = cPhone;
-        document.getElementById('a4DocNum').innerText = docNum;
-
-        document.getElementById('rcClientName').innerText = client;
-        document.getElementById('rcClientPhone').innerText = cPhone;
-        document.getElementById('rcBonNum').innerText = '#' + docNum;
-
-        const dDate = document.getElementById('deliveryDate').value;
-        if(dDate) {
-            const p = dDate.split('-');
-            const formatted = p[2] + '/' + p[1] + '/' + p[0];
-            document.getElementById('a4DeliveryDate').innerText = formatted;
-            document.getElementById('rcDeliveryDate').innerText = formatted;
-        } else {
-            document.getElementById('a4DeliveryDate').innerText = '--/--/----';
-            document.getElementById('rcDeliveryDate').innerText = '--/--/----';
+    <!-- Script JavaScript -->
+    <script>
+        function showDoc(docId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden-doc'));
+            document.getElementById(docId).classList.remove('hidden-doc');
         }
 
-        const od = document.getElementById('odVal').value || '-';
-        const og = document.getElementById('ogVal').value || '-';
-        const ep = document.getElementById('epVal').value || '--';
+        function openSettings() { document.getElementById('settings-modal').style.display = 'flex'; }
+        function saveSettings() {
+            let shopName = document.getElementById('setting-shop-name').value;
+            let shopSub = document.getElementById('setting-shop-sub').value;
+            let shopPhone = document.getElementById('setting-shop-phone').value;
 
-        document.getElementById('a4Od').innerText = od;
-        document.getElementById('a4Og').innerText = og;
-        document.getElementById('a4Ep').innerText = ep + ' mm';
-
-        document.getElementById('rcOdVal').innerText = od;
-        document.getElementById('rcOgVal').innerText = og;
-        document.getElementById('rcEp').innerText = ep + ' mm';
-
-        const monture = document.getElementById('montureDesc').value || 'Monture Optique';
-        const pMonture = parseFloat(document.getElementById('monturePrice').value) || 0;
-
-        const verres = document.getElementById('verresDesc').value || 'Verres Optiques';
-        const pVerres = parseFloat(document.getElementById('verresPrice').value) || 0;
-
-        const advance = parseFloat(document.getElementById('advancePrice').value) || 0;
-
-        document.getElementById('a4MontureName').innerText = monture;
-        document.getElementById('a4MontureUnitPrice').innerText = pMonture.toFixed(2);
-        document.getElementById('a4MontureTotalPrice').innerText = pMonture.toFixed(2);
-
-        document.getElementById('a4VerresName').innerText = verres;
-        document.getElementById('a4VerresUnitPrice').innerText = pVerres.toFixed(2);
-        document.getElementById('a4VerresTotalPrice').innerText = pVerres.toFixed(2);
-
-        document.getElementById('rcMonture').innerText = monture;
-        document.getElementById('rcVerres').innerText = verres;
-
-        const totalRaw = pMonture + pVerres;
-        const withTva = document.getElementById('tvaSelect').value === 'yes';
-
-        let totalTtc = totalRaw;
-        if(withTva) {
-            const ht = totalRaw / 1.2;
-            const tva = totalRaw - ht;
-            document.getElementById('a4TotalHt').innerText = ht.toFixed(2) + ' DH';
-            document.getElementById('a4TotalTva').innerText = tva.toFixed(2) + ' DH';
-            document.getElementById('rowHt').style.display = 'table-row';
-            document.getElementById('rowTva').style.display = 'table-row';
-        } else {
-            document.getElementById('rowHt').style.display = 'none';
-            document.getElementById('rowTva').style.display = 'none';
+            document.querySelectorAll('.dynamic-shop-name').forEach(el => el.innerText = shopName);
+            document.querySelectorAll('.dynamic-shop-sub').forEach(el => el.innerText = shopSub);
+            document.querySelectorAll('.dynamic-shop-phone').forEach(el => el.innerText = shopPhone);
+            document.getElementById('settings-modal').style.display = 'none';
         }
 
-        const rest = totalTtc - advance;
+        function updateRecuData() {
+            document.getElementById('recu-client-view').innerText = document.getElementById('input-client-name').value;
+            document.getElementById('recu-item-view').innerText = document.getElementById('input-item-desc').value;
+            
+            let total = parseFloat(document.getElementById('input-total').value) || 0;
+            let acompte = parseFloat(document.getElementById('input-acompte').value) || 0;
+            let reste = total - acompte;
 
-        document.getElementById('a4TotalTtc').innerText = totalTtc.toFixed(2) + ' DH';
-        document.getElementById('a4Advance').innerText = advance.toFixed(2) + ' DH';
-        document.getElementById('a4Rest').innerText = (rest >= 0 ? rest : 0).toFixed(2) + ' DH';
+            document.querySelectorAll('.val-total').forEach(el => el.innerText = total.toFixed(2));
+            document.querySelectorAll('.val-acompte').forEach(el => el.innerText = acompte.toFixed(2));
+            document.querySelectorAll('.val-reste').forEach(el => el.innerText = reste.toFixed(2));
 
-        document.getElementById('rcTotal').innerText = totalTtc.toFixed(2) + ' DH';
-        document.getElementById('rcAdvance').innerText = advance.toFixed(2) + ' DH';
-        document.getElementById('rcRest').innerText = (rest >= 0 ? rest : 0).toFixed(2) + ' DH';
-    }
+            document.getElementById('v-od-sph').innerText = document.getElementById('od-sph').value;
+            document.getElementById('v-od-cyl').innerText = document.getElementById('od-cyl').value;
+            document.getElementById('v-og-sph').innerText = document.getElementById('og-sph').value;
+            document.getElementById('v-og-cyl').innerText = document.getElementById('og-cyl').value;
+        }
 
-    function resetForm() {
-        document.getElementById('clientName').value = '';
-        document.getElementById('clientPhone').value = '';
-        document.getElementById('deliveryDate').value = '';
-        document.getElementById('odVal').value = '';
-        document.getElementById('ogVal').value = '';
-        document.getElementById('epVal').value = '';
-        document.getElementById('montureDesc').value = '';
-        document.getElementById('monturePrice').value = '';
-        document.getElementById('verresDesc').value = '';
-        document.getElementById('verresPrice').value = '';
-        document.getElementById('advancePrice').value = '';
-        updateAll();
-    }
+        function addRow(tbodyId, prefix) {
+            let tbody = document.getElementById(tbodyId);
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td contenteditable="true" class="editable-cell" style="text-align: left;">Article / Service</td>
+                <td contenteditable="true" class="editable-cell ${prefix}-qty" oninput="calcA4('${tbodyId}', '${prefix}-total-ht')">1</td>
+                <td contenteditable="true" class="editable-cell ${prefix}-price" oninput="calcA4('${tbodyId}', '${prefix}-total-ht')">0.00</td>
+                <td class="${prefix}-row-total">0.00</td>
+            `;
+            tbody.appendChild(tr);
+        }
 
-    function triggerPrint() {
-        window.print();
-    }
-</script>
+        function calcA4(tbodyId, totalElementId) {
+            let tbody = document.getElementById(tbodyId);
+            let rows = tbody.querySelectorAll('tr');
+            let grandTotal = 0;
+
+            rows.forEach(row => {
+                let qty = parseFloat(row.children[1].innerText) || 0;
+                let price = parseFloat(row.children[2].innerText) || 0;
+                let rowTotal = qty * price;
+                row.children[3].innerText = rowTotal.toFixed(2);
+                grandTotal += rowTotal;
+            });
+
+            document.getElementById(totalElementId).innerText = grandTotal.toFixed(2);
+            if(totalElementId === 'fac-total-ht') document.getElementById('fac-net-payer').innerText = grandTotal.toFixed(2);
+            if(totalElementId === 'dev-total-ht') document.getElementById('dev-net-payer').innerText = grandTotal.toFixed(2);
+        }
+
+        function resetAll() {
+            document.getElementById('input-client-name').value = "";
+            document.getElementById('input-item-desc').value = "";
+            document.getElementById('input-total').value = "";
+            document.getElementById('input-acompte').value = "";
+            document.getElementById('od-sph').value = "";
+            document.getElementById('od-cyl').value = "";
+            document.getElementById('og-sph').value = "";
+            document.getElementById('og-cyl').value = "";
+            updateRecuData();
+        }
+
+        window.onload = function() {
+            let today = new Date().toLocaleDateString('fr-FR');
+            document.querySelectorAll('.current-date').forEach(el => el.innerText = today);
+            updateRecuData();
+        }
+    </script>
 
 </body>
 </html>
